@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "eShaafi_HealthUnit"
 include(":app")
- 
+include(":eshaafiHU_Android_SDK")
