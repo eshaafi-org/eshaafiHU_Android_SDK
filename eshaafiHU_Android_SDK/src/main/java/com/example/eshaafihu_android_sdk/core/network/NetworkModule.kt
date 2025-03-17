@@ -14,6 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import javax.inject.Named
+import retrofit2.HttpException
 
 @Provides
 @Singleton
@@ -123,6 +124,17 @@ object NetworkUtils {
         // Implement actual network check
         return true
     }
+
+    fun parseException(exception: Exception): String {
+        return when (exception) {
+            is HttpException -> {
+                val errorBody = exception.response()?.errorBody()?.string()
+                errorBody ?: "HTTP ${exception.code()} - ${exception.message()}"
+            }
+            is IOException -> "Network error. Please check your internet connection."
+            else -> exception.localizedMessage ?: "Unknown error occurred"
+        }
+    }
 }
 
 object NetworkConfigManager {
@@ -136,4 +148,10 @@ class TokenManager {
         // Implement token refresh logic
         return "new_token"
     }
+}
+
+sealed class DataState<out T> {
+    data class Success<T>(val data: T) : DataState<T>()
+    data class Error(val exception: String) : DataState<Nothing>()
+    object Loading : DataState<Nothing>()
 }
