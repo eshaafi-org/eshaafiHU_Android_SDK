@@ -1,8 +1,11 @@
+import com.android.build.gradle.internal.utils.createPublishingInfoForLibrary
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     id("dagger.hilt.android.plugin") // Explicitly add Hilt plugin
     id("kotlin-kapt") // Keep kapt for annotation processing
+    id("maven-publish") // publish the SDK on github
 }
 
 android {
@@ -73,4 +76,17 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata)
 
     implementation(libs.coroutines)
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+                groupId = "com.github.eshaafiHU_Android_SDK"
+                artifactId = "eshaafiHU_Android_SDK"
+                version = "1.0.1"
+            }
+        }
+    }
 }
