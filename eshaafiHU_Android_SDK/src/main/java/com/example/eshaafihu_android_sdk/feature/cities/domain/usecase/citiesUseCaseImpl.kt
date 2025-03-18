@@ -1,6 +1,6 @@
 package com.example.eshaafihu_android_sdk.feature.cities.domain.usecase
 
-import com.example.eshaafihu_android_sdk.core.network.DataState
+import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
 import com.example.eshaafihu_android_sdk.feature.cities.data.model.CitiesResponseModelDto
 import com.example.eshaafihu_android_sdk.core.usecase.CitiesUseCase
 import com.example.eshaafihu_android_sdk.feature.cities.domain.repository.CitiesRepository

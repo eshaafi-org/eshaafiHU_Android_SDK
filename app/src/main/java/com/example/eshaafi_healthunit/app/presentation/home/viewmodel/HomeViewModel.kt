@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.eshaafihu_android_sdk.core.network.DataState
+import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
+import com.example.eshaafihu_android_sdk.core.network.networkConfiguration.NetworkConfigManager
+import com.example.eshaafihu_android_sdk.core.network.networkConfiguration.RequestConfig
 import com.example.eshaafihu_android_sdk.core.usecase.CitiesUseCase
 import com.example.eshaafihu_android_sdk.feature.cities.data.model.CitiesResponseModelDto
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,4 +28,14 @@ class HomeViewModel @Inject constructor(
             _citiesState.value = citiesUseCase.getCities()
         }
     }
+
+//    fun updateSDKConfig(token: String, deviceId: String) {
+//        val config = RequestConfig(
+//            appVersion = "1.0.0",
+//            deviceType = "Android",
+//            deviceId = deviceId,
+//            token = token
+//        )
+//        NetworkConfigManager.updateConfig(config) // ✅ SDK Gets Updated
+//    }
 }

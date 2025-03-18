@@ -1,7 +1,7 @@
 package com.example.eshaafihu_android_sdk.feature.cities.data.repository
 
-import com.example.eshaafihu_android_sdk.core.network.DataState
-import com.example.eshaafihu_android_sdk.core.network.NetworkUtils
+import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
+import com.example.eshaafihu_android_sdk.core.network.networkUtils.NetworkUtils
 import com.example.eshaafihu_android_sdk.feature.cities.data.apiService.CitiesApiService
 import com.example.eshaafihu_android_sdk.feature.cities.data.model.CitiesResponseModelDto
 import com.example.eshaafihu_android_sdk.feature.cities.domain.repository.CitiesRepository
