@@ -41,8 +41,8 @@ class MainActivity : AppCompatActivity() {
         WindowInsetsControllerCompat(window, window.decorView).apply {
             hide(android.view.WindowInsets.Type.systemBars())
         }
-        viewModel.fetchItems()
-        viewModel.items.observe(this) { items ->
+        viewModel.fetchCities()
+        viewModel.citiesState.observe(this) { items ->
             Log.d("HomeViewModel", "Observed Items: $items")
 
         }

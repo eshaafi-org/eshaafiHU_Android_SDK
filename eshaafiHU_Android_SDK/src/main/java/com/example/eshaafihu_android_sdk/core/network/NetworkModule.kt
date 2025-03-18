@@ -13,13 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
-import javax.inject.Named
 import retrofit2.HttpException
-
-@Provides
-@Singleton
-@Named("BaseUrl")
-fun provideBaseUrl(): String = Constants.BASE_URL
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -27,7 +21,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHeaderInterceptor(): Interceptor {
+    fun provideHealthUnitRetrofit(): Interceptor {
         return Interceptor { chain ->
             val originalRequest = chain.request()
             val requestBuilder = originalRequest.newBuilder()
@@ -103,9 +97,9 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient, @Named("BaseUrl") baseUrl: String): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

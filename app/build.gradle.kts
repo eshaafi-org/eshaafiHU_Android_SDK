@@ -88,4 +88,5 @@ dependencies {
 
     implementation(libs.coroutines)
 
+    implementation(project(":eshaafiHU_Android_SDK"))
 }

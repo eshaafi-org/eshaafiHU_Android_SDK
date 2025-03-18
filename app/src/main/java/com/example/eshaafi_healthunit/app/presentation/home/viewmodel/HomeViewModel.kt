@@ -4,38 +4,26 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.eshaafi_healthunit.app.domain.home.model.CityStatus
-import com.example.eshaafi_healthunit.app.domain.home.model.HomeModel
-import com.example.eshaafi_healthunit.app.domain.home.usecases.GetItemsUseCase
+import com.example.eshaafihu_android_sdk.core.network.DataState
+import com.example.eshaafihu_android_sdk.core.usecase.CitiesUseCase
+import com.example.eshaafihu_android_sdk.feature.cities.data.model.CitiesResponseModelDto
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getItemsUseCase: GetItemsUseCase
+    private val citiesUseCase: CitiesUseCase
 ) : ViewModel() {
-//    private val _items = MutableStateFlow<CityStatus?>(null) // Use nullable type
-//    val items: LiveData<CityStatus?> = _items.asLiveData()
 
-    private val _items = MutableLiveData<CityStatus>()
-    val items: LiveData<CityStatus> = _items
+    private val _citiesState = MutableLiveData<DataState<CitiesResponseModelDto>>()
+    val citiesState: LiveData<DataState<CitiesResponseModelDto>> get() = _citiesState
 
-    fun fetchItems() {
+    fun fetchCities() {
         viewModelScope.launch {
-            try {
-                _items.value = getItemsUseCase()
-            } catch (e: Exception) {
-                Log.e("HomeViewModel", "$e")
-            }
+            _citiesState.value = citiesUseCase.getCities()
         }
     }
 }
-
-
-
-
