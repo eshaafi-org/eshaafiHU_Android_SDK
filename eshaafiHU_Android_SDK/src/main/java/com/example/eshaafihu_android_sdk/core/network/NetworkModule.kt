@@ -7,13 +7,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
-import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import retrofit2.HttpException
+import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -21,39 +22,32 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHealthUnitRetrofit(): Interceptor {
+    @Named("HealthUnitInterceptor")
+    fun provideHealthUnitInterceptor(): Interceptor {
         return Interceptor { chain ->
             val originalRequest = chain.request()
             val requestBuilder = originalRequest.newBuilder()
-            requestBuilder.header("Accept", "application/json")
-            requestBuilder.header("Content-Type", "application/json")
+                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
 
             // Dynamic headers
             val config = NetworkConfigManager.currentConfig
-            if (config != null) {
-                requestBuilder.header("app-version", config.appVersion)
-                requestBuilder.header("device-type", config.deviceType)
-                requestBuilder.header("device-id", config.deviceId)
-                config.token.let { token ->
-                    requestBuilder.header("Authorization", "Bearer $token")
+            config?.let {
+                requestBuilder.header("app-version", it.appVersion)
+                requestBuilder.header("device-type", it.deviceType)
+                requestBuilder.header("device-id", it.deviceId)
+                if (!it.token.isNullOrEmpty()) {
+                    requestBuilder.header("Authorization", "Bearer ${it.token}")
                 }
-            } else {
-                Log.w("NetworkModule", "RequestConfig is missing")
-            }
+            } ?: Log.w("NetworkModule", "RequestConfig is missing")
 
-            // Token handling
-            val token = config?.token
-            if (!token.isNullOrEmpty()) {
-                requestBuilder.header("Authorization", "Bearer $token")
-            } else {
-                Log.w("NetworkModule", "Authorization token is missing")
-            }
             chain.proceed(requestBuilder.build())
         }
     }
 
     @Provides
     @Singleton
+    @Named("NetworkInterceptor")
     fun provideNetworkInterceptor(): Interceptor {
         return Interceptor { chain ->
             if (!NetworkUtils.isNetworkAvailable()) {
@@ -65,13 +59,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTokenRefreshInterceptor(tokenManager: TokenManager): Interceptor {
+    @Named("TokenRefreshInterceptor")
+    fun provideTokenRefreshInterceptor(): Interceptor {
         return Interceptor { chain ->
             val response = chain.proceed(chain.request())
             if (response.code == 401) {
-                val newToken = tokenManager.refreshToken()
                 val newRequest = chain.request().newBuilder()
-                    .header("Authorization", "Bearer $newToken")
+                    .header("Authorization", "Bearer")
                     .build()
                 return@Interceptor chain.proceed(newRequest)
             }
@@ -81,15 +75,23 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+    }
+
+    @Provides
+    @Singleton
     fun provideOkHttpClient(
-        headerInterceptor: Interceptor,
-        networkInterceptor: Interceptor,
-        tokenRefreshInterceptor: Interceptor,
+        @Named("HealthUnitInterceptor") healthUnitInterceptor: Interceptor,
+        @Named("NetworkInterceptor") networkInterceptor: Interceptor,
+        @Named("TokenRefreshInterceptor") tokenRefreshInterceptor: Interceptor,
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(networkInterceptor)
-            .addInterceptor(headerInterceptor)
+            .addInterceptor(healthUnitInterceptor)
             .addInterceptor(tokenRefreshInterceptor)
             .addInterceptor(loggingInterceptor)
             .build()
@@ -136,13 +138,13 @@ object NetworkConfigManager {
 }
 
 class NoConnectivityException : IOException("No Internet Connection")
-
-class TokenManager {
-    fun refreshToken(): String {
-        // Implement token refresh logic
-        return "new_token"
-    }
-}
+//@Singleton
+//class TokenManager {
+//    fun refreshToken(): String {
+//        // Implement token refresh logic
+//        return "new_token"
+//    }
+//}
 
 sealed class DataState<out T> {
     data class Success<T>(val data: T) : DataState<T>()
