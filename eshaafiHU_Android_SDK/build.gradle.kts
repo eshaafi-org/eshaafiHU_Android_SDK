@@ -1,30 +1,23 @@
+import com.android.build.gradle.internal.utils.createPublishingInfoForLibrary
+
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     id("dagger.hilt.android.plugin") // Explicitly add Hilt plugin
     id("kotlin-kapt") // Keep kapt for annotation processing
+    id("maven-publish") // publish the SDK on github
 }
 
 android {
-    namespace = "com.example.eshaafi_healthunit"
+    namespace = "com.example.eshaafihu_android_sdk"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.eshaafi_healthunit"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }
-
 
     buildTypes {
         release {
@@ -42,8 +35,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-
-
 }
 
 dependencies {
@@ -51,8 +42,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -87,6 +76,17 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata)
 
     implementation(libs.coroutines)
+}
 
-    implementation(project(":eshaafiHU_Android_SDK"))
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+                groupId = "com.github.eshaafiHU_Android_SDK"
+                artifactId = "eshaafiHU_Android_SDK"
+                version = "1.0.1"
+            }
+        }
+    }
 }
