@@ -27,6 +27,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.eshaafi_healthunit.app.presentation.home.viewmodel.HomeViewModel
+import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,16 +43,23 @@ class MainActivity : AppCompatActivity() {
             hide(android.view.WindowInsets.Type.systemBars())
         }
         viewModel.fetchCities()
-        viewModel.citiesState.observe(this) { items ->
-            Log.d("HomeViewModel", "Observed Items: $items")
-
+        viewModel.citiesState.observe(this) { state ->
+            when (state) {
+                is DataState.Loading -> {
+                    // Show loading indicator
+                }
+                is DataState.Success -> {
+                    Log.d("myResponse","${state.data.response?.pakistanCities}")
+                    // Hide loading and display cities data
+                }
+                is DataState.Error -> {
+                    // Hide loading and show error message
+                }
+            }
         }
 //        setContentView(R.layout.activity_main)
         setContent {
             MyApp()
-
-
-
         }
     }
 //    @Preview(showBackground = true)

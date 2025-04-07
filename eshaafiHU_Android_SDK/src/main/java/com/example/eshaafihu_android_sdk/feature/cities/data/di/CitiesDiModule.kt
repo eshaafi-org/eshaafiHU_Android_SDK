@@ -2,9 +2,9 @@ package com.example.eshaafihu_android_sdk.feature.cities.data.di
 
 import com.example.eshaafihu_android_sdk.feature.cities.data.apiService.CitiesApiService
 import com.example.eshaafihu_android_sdk.feature.cities.data.repository.CitiesRepositoryImpl
-import com.example.eshaafihu_android_sdk.core.usecase.CitiesUseCase
+import com.example.eshaafihu_android_sdk.feature.cities.domain.usecase.CitiesUseCase
 import com.example.eshaafihu_android_sdk.feature.cities.domain.repository.CitiesRepository
-import com.example.eshaafihu_android_sdk.feature.cities.domain.usecase.CitiesUseCaseImpl
+import com.example.eshaafihu_android_sdk.feature.cities.data.usecase.CitiesUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
