@@ -132,9 +132,9 @@ To maintain consistency and follow Clean Architecture with MVVM, use the followi
 │   │   └── <Feature>ResponseDto.kt        🔄 DTOs for API mapping
 │   ├── 6️⃣ usecase/
 │   │   └── <Feature>UseCaseImpl.kt        🔁 Implements business logic, calls repo
-│   ├── 8️⃣ repository/
+│   ├── 9️⃣ repository/
 │   │   └── <Feature>RepositoryImpl.kt     📡 Implements repository, calls API
-│   ├── 9️⃣ apiService/
+│   ├── 8️⃣ apiService/
 │   │   └── <Feature>ApiService.kt         🌐 Retrofit interface
 │   ├── 🔟 di/
 │       └── <Feature>DiModule.kt           💉 Provides UseCase, Repo, Api via DI
@@ -192,3 +192,4 @@ feature/
         ├── apiService/DoctorApiService.kt
         └── di/DoctorDiModule.kt
 ```
+
