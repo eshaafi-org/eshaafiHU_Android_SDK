@@ -9,7 +9,7 @@ import java.io.IOException
 import java.nio.charset.Charset
 import java.util.concurrent.TimeUnit
 
-class PrettyLoggingInterceptor : Interceptor {
+internal class PrettyLoggingInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val startTime = System.nanoTime()

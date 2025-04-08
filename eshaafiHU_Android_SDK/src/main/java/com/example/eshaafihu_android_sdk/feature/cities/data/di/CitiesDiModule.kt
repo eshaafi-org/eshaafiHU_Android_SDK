@@ -5,7 +5,6 @@ import com.example.eshaafihu_android_sdk.feature.cities.data.repository.CitiesRe
 import com.example.eshaafihu_android_sdk.feature.cities.domain.usecase.CitiesUseCase
 import com.example.eshaafihu_android_sdk.feature.cities.domain.repository.CitiesRepository
 import com.example.eshaafihu_android_sdk.feature.cities.data.usecase.CitiesUseCaseImpl
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,25 +14,27 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class CitiesDiModule {
+object CitiesDiModule {
 
-    @Binds
+    @Provides
     @Singleton
-    abstract fun bindCitiesRepository(
-        repositoryImpl: CitiesRepositoryImpl
-    ): CitiesRepository
-
-    @Binds
-    @Singleton
-    abstract fun bindCitiesUseCase(
-        useCaseImpl: CitiesUseCaseImpl
-    ): CitiesUseCase
-
-    companion object {
-        @Provides
-        @Singleton
-        fun provideCitiesApiService(retrofit: Retrofit): CitiesApiService {
-            return retrofit.create(CitiesApiService::class.java)
-        }
+    fun provideCitiesRepository(
+        apiService: CitiesApiService
+    ): CitiesRepository {
+        return CitiesRepositoryImpl(apiService)
     }
+
+    @Provides
+    @Singleton
+    fun provideCitiesUseCase(
+        repository: CitiesRepository
+    ): CitiesUseCase {
+        return CitiesUseCaseImpl(repository)
+    }
+    @Provides
+    @Singleton
+    fun provideCitiesApiService(retrofit: Retrofit): CitiesApiService {
+        return retrofit.create(CitiesApiService::class.java)
+    }
+
 }

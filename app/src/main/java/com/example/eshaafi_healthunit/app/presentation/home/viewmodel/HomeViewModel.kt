@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
+import com.example.eshaafihu_android_sdk.core.network.networkConfiguration.NetworkConfigManager
+import com.example.eshaafihu_android_sdk.core.network.networkConfiguration.RequestConfig
 import com.example.eshaafihu_android_sdk.feature.cities.domain.usecase.CitiesUseCase
 import com.example.eshaafihu_android_sdk.feature.cities.domain.entity.CitiesEntityResponseModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,13 +28,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-//    fun updateSDKConfig(token: String, deviceId: String) {
-//        val config = RequestConfig(
-//            appVersion = "1.0.0",
-//            deviceType = "Android",
-//            deviceId = deviceId,
-//            token = token
-//        )
-//        NetworkConfigManager.updateConfig(config) // ✅ SDK Gets Updated
-//    }
+    fun updateSDKConfig(token: String, deviceId: String) {
+        val config = RequestConfig(
+            appVersion = "1.0.0",
+            deviceType = "Android",
+            deviceId = deviceId,
+            token = token
+        )
+        NetworkConfigManager.updateConfig(config) // ✅ SDK Gets Updated
+    }
 }
