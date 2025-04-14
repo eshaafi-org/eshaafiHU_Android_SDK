@@ -12,6 +12,9 @@ import com.example.eshaafihu_android_sdk.feature.auth.login.domain.entity.OtpReq
 import com.example.eshaafihu_android_sdk.feature.auth.login.domain.usecases.LoginUseCases
 import com.example.eshaafihu_android_sdk.feature.cities.domain.usecase.CitiesUseCase
 import com.example.eshaafihu_android_sdk.feature.cities.domain.entity.CitiesEntityResponseModel
+import com.example.eshaafihu_android_sdk.feature.refresh_token.data.model.RefreshTokenPost
+import com.example.eshaafihu_android_sdk.feature.refresh_token.domain.entity.RefreshTokenResponse
+import com.example.eshaafihu_android_sdk.feature.refresh_token.domain.usecases.RefreshTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -20,7 +23,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val citiesUseCase: CitiesUseCase,
-    private val loginUseCase: LoginUseCases
+    private val loginUseCase: LoginUseCases,
+    private val refreshToken: RefreshTokenUseCase,
 ) : ViewModel() {
 
     private val _citiesState = MutableLiveData<DataState<CitiesEntityResponseModel>>()
@@ -28,6 +32,9 @@ class HomeViewModel @Inject constructor(
 
     private val _sendPhone = MutableLiveData<DataState<OtpRequestResponse>>()
     val sendPhone: LiveData<DataState<OtpRequestResponse>> get() = _sendPhone
+
+    private val _refreshTokenRequest = MutableLiveData<DataState<RefreshTokenResponse>>()
+    val refreshTokenRequest: LiveData<DataState<RefreshTokenResponse>> get() = _refreshTokenRequest
 
     fun fetchCities() {
         viewModelScope.launch {
@@ -37,6 +44,12 @@ class HomeViewModel @Inject constructor(
     fun sendLoginPhone(request:OtpRequestDto) {
         viewModelScope.launch {
             _sendPhone.value = loginUseCase.loginResponse(request)
+        }
+    }
+
+    fun tokenRequest(request:RefreshTokenPost) {
+        viewModelScope.launch {
+            _refreshTokenRequest.value = refreshToken.refreshTokenResponse(request)
         }
     }
 
