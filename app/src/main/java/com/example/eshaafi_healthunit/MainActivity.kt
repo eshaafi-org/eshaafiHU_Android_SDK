@@ -9,15 +9,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -83,22 +74,6 @@ class MainActivity : AppCompatActivity() {
 //    @Preview(showBackground = true)
     @Composable
     fun MyApp() {
-        MaterialTheme {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = Color.White
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Text(text = "Hello, Compose!", style = MaterialTheme.typography.h4)
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Button(onClick = { /* Handle Click */ }) {
-                        Text("Click Me")
-                    }
-                }
-            }
-        }
     }
 }
 
