@@ -5,7 +5,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
 
-class NetworkInterceptor() : Interceptor {
+internal class NetworkInterceptor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         if (!NetworkUtils.isNetworkAvailable()) {
             throw NoConnectivityException()

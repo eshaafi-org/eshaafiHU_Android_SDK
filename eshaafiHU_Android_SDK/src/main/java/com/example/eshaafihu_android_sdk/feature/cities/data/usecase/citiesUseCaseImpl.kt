@@ -6,7 +6,7 @@ import com.example.eshaafihu_android_sdk.feature.cities.domain.usecase.CitiesUse
 import com.example.eshaafihu_android_sdk.feature.cities.domain.repository.CitiesRepository
 import javax.inject.Inject
 
-class CitiesUseCaseImpl @Inject constructor(
+internal class CitiesUseCaseImpl @Inject constructor(
     private val repository: CitiesRepository
 ) : CitiesUseCase {
     override suspend fun getCities(): DataState<CitiesEntityResponseModel> {

@@ -4,7 +4,7 @@ import okio.IOException
 import retrofit2.HttpException
 import java.net.InetAddress
 
-object NetworkUtils {
+internal object NetworkUtils {
 
     fun isNetworkAvailable(): Boolean {
         return try {

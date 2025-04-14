@@ -4,7 +4,7 @@ import com.example.eshaafihu_android_sdk.core.network.tokenManager.TokenManager
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class TokenRefreshInterceptor(private val tokenManager: TokenManager) : Interceptor {
+internal class TokenRefreshInterceptor(private val tokenManager: TokenManager) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val response = chain.proceed(originalRequest)

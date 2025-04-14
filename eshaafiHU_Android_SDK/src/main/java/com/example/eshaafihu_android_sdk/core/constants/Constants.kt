@@ -5,5 +5,6 @@ class Constants {
         //        my api end points
         const val BASE_URL: String = "https://api.eshaafi.com/"
         const val CITIES_API: String = "new/cities"
+        const val PHONE_LOGIN: String = "auth/login"
     }
 }
