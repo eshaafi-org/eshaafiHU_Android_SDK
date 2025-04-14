@@ -10,6 +10,9 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.eshaafi_healthunit.app.presentation.home.viewmodel.HomeViewModel
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
