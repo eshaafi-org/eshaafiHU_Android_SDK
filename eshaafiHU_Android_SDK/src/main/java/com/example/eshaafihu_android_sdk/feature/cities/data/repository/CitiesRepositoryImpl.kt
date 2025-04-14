@@ -16,7 +16,7 @@ import javax.inject.Inject
  * @param apiService The API service used to fetch cities data.
  */
 
-class CitiesRepositoryImpl @Inject constructor(
+internal class CitiesRepositoryImpl @Inject constructor(
     private val apiService: CitiesApiService
 ) : CitiesRepository {
 

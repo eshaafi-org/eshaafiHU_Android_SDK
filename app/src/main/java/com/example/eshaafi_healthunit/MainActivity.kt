@@ -21,13 +21,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.eshaafi_healthunit.app.presentation.home.viewmodel.HomeViewModel
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
+import com.example.eshaafihu_android_sdk.feature.auth.login.data.model.OtpRequestDto
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,7 +40,13 @@ class MainActivity : AppCompatActivity() {
         WindowInsetsControllerCompat(window, window.decorView).apply {
             hide(android.view.WindowInsets.Type.systemBars())
         }
-        viewModel.fetchCities()
+//        viewModel.fetchCities()
+        viewModel.sendLoginPhone(
+            OtpRequestDto(
+                phoneNo = "+923441490027",
+                type = 1
+            )
+        )
         viewModel.citiesState.observe(this) { state ->
             when (state) {
                 is DataState.Loading -> {
@@ -50,6 +54,20 @@ class MainActivity : AppCompatActivity() {
                 }
                 is DataState.Success -> {
                     Log.d("myResponse","${state.data.response?.pakistanCities}")
+                    // Hide loading and display cities data
+                }
+                is DataState.Error -> {
+                    // Hide loading and show error message
+                }
+            }
+        }
+        viewModel.sendPhone.observe(this) { state ->
+            when (state) {
+                is DataState.Loading -> {
+                    // Show loading indicator
+                }
+                is DataState.Success -> {
+                    Log.d("myResponse","${state.data.response}")
                     // Hide loading and display cities data
                 }
                 is DataState.Error -> {

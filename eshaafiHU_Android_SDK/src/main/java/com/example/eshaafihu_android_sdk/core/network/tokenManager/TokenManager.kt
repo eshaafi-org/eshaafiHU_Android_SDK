@@ -5,7 +5,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TokenManager @Inject constructor() {
+internal class TokenManager @Inject constructor() {
 
     var token: String? = null
         private set

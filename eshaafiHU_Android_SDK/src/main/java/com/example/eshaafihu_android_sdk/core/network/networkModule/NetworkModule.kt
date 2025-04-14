@@ -18,11 +18,13 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+internal object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTokenManager(): TokenManager = TokenManager()
+    fun provideTokenManager(): TokenManager {
+        return TokenManager()
+    }
 
     @Provides
     @Singleton
@@ -63,7 +65,6 @@ object NetworkModule {
             .addInterceptor(prettyLoggingInterceptor)
             .build()
     }
-
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {

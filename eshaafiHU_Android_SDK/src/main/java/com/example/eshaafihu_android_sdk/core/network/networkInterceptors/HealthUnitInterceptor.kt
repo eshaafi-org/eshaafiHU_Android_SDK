@@ -4,7 +4,7 @@ import com.example.eshaafihu_android_sdk.core.network.networkConfiguration.Netwo
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class HealthUnitInterceptor : Interceptor {
+internal class HealthUnitInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val requestBuilder = originalRequest.newBuilder()

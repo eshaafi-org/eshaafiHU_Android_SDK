@@ -6,7 +6,7 @@ import com.example.eshaafihu_android_sdk.feature.cities.domain.entity.PakistanEn
 import com.google.gson.annotations.SerializedName
 
 // DTO for Cities API Response
-data class CitiesResponseModelDto(
+internal data class CitiesResponseModelDto(
     @SerializedName("responseCode") val responseCode: Int? = null,
     @SerializedName("message") val message: String? = null,
     @SerializedName("response") val response: CitiesEntityResponseDto? = null
@@ -24,7 +24,7 @@ data class CitiesResponseModelDto(
 }
 
 // DTO for Cities Entity Response
-data class CitiesEntityResponseDto(
+internal data class CitiesEntityResponseDto(
     @SerializedName("pakistan_cities") val pakistanCities: List<PakistanEntityCitiesResponseDto> = emptyList(),
     @SerializedName("name") val name: String? = null,
     @SerializedName("type") val type: String? = null
@@ -39,7 +39,7 @@ data class CitiesEntityResponseDto(
 }
 
 // DTO for Pakistan Cities Response
-data class PakistanEntityCitiesResponseDto(
+internal data class PakistanEntityCitiesResponseDto(
     @SerializedName("name") val name: String? = null,
     @SerializedName("country") val country: String? = null,
     @SerializedName("lng") val lng: String? = null,
