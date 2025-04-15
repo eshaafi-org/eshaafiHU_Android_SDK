@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         WindowInsetsControllerCompat(window, window.decorView).apply {
             hide(android.view.WindowInsets.Type.systemBars())
         }
-//        viewModel.updateSDKConfig(Constants.EXPIRE_TOKEN,"dfdsfsafasd")
+        viewModel.updateSDKConfig(Constants.MY_TOKEN,"dfdsfsafasd")
         viewModel.fetchCities()
 //        viewModel.sendLoginPhone(
 //            OtpRequestDto(
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                     // Show loading indicator
                 }
                 is DataState.Success -> {
-                    Log.d("myResponse","${state.data}")
+                    Log.d("tokenUpdate","${state.data}")
                     // Hide loading and display cities data
                 }
                 is DataState.Error -> {

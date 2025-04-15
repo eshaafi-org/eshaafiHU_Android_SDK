@@ -6,14 +6,15 @@ import com.example.eshaafihu_android_sdk.core.network.networkInterceptors.Networ
 import com.example.eshaafihu_android_sdk.core.network.networkInterceptors.PrettyLoggingInterceptor
 import com.example.eshaafihu_android_sdk.core.network.networkInterceptors.TokenRefreshInterceptor
 import com.example.eshaafihu_android_sdk.core.network.tokenManager.TokenManager
+import com.example.eshaafihu_android_sdk.feature.refresh_token.domain.usecases.RefreshTokenUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Provider
 import javax.inject.Singleton
 
 @Module
@@ -22,8 +23,8 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTokenManager(): TokenManager {
-        return TokenManager()
+    fun provideTokenManager(refreshTokenUseCase: RefreshTokenUseCase): TokenManager {
+        return TokenManager(refreshTokenUseCase)
     }
 
     @Provides
@@ -40,8 +41,10 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTokenRefreshInterceptor(tokenManager: TokenManager): TokenRefreshInterceptor {
-        return TokenRefreshInterceptor(tokenManager)
+    fun provideTokenRefreshInterceptor(
+        tokenManagerProvider: Provider<TokenManager>
+    ): TokenRefreshInterceptor {
+        return TokenRefreshInterceptor(tokenManagerProvider)
     }
 
     @Provides
