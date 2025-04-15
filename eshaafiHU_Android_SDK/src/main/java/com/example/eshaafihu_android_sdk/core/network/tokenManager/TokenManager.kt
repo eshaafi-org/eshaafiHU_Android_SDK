@@ -5,11 +5,13 @@ import com.example.eshaafihu_android_sdk.core.constants.Constants
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
 import com.example.eshaafihu_android_sdk.feature.refresh_token.data.model.RefreshTokenPost
 import com.example.eshaafihu_android_sdk.feature.refresh_token.domain.usecases.RefreshTokenUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class TokenManager @Inject constructor(
+ class TokenManager @Inject constructor(
     private val refreshTokenUseCase: RefreshTokenUseCase
 ) {
 
@@ -17,11 +19,15 @@ internal class TokenManager @Inject constructor(
     val token: String?
         get() = _token
 
+    private val _tokenFlow = MutableStateFlow<String?>(null)
+    val tokenFlow: StateFlow<String?> get() = _tokenFlow
+
     fun updateToken(newToken: String) {
         _token = newToken
+        _tokenFlow.value = newToken
     }
 
-    suspend fun refreshToken(): String {
+    internal suspend fun refreshToken(): String {
         Log.d("TokenManager", "Refreshing token...")
 
         val request = RefreshTokenPost(

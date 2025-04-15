@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.eshaafi_healthunit.app.presentation.home.viewmodel.HomeViewModel
 import com.example.eshaafihu_android_sdk.core.constants.Constants
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
@@ -34,6 +35,12 @@ class MainActivity : AppCompatActivity() {
             hide(android.view.WindowInsets.Type.systemBars())
         }
         viewModel.updateSDKConfig(Constants.MY_TOKEN,"dfdsfsafasd")
+        lifecycleScope.launchWhenStarted {
+            viewModel.tokenFlow.collect { token ->
+                Log.d("MyTOKEN", "Observed in Fragment: $token")
+                // Update UI or do something with token
+            }
+        }
         viewModel.fetchCities()
 //        viewModel.sendLoginPhone(
 //            OtpRequestDto(

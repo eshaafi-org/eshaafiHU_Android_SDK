@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
 import com.example.eshaafihu_android_sdk.core.network.networkConfiguration.NetworkConfigManager
 import com.example.eshaafihu_android_sdk.core.network.networkConfiguration.RequestConfig
+import com.example.eshaafihu_android_sdk.core.network.tokenManager.TokenManager
 import com.example.eshaafihu_android_sdk.feature.auth.login.data.model.OtpRequestDto
 import com.example.eshaafihu_android_sdk.feature.auth.login.domain.entity.OtpRequestResponse
 import com.example.eshaafihu_android_sdk.feature.auth.login.domain.usecases.LoginUseCases
@@ -16,6 +17,8 @@ import com.example.eshaafihu_android_sdk.feature.refresh_token.data.model.Refres
 import com.example.eshaafihu_android_sdk.feature.refresh_token.domain.entity.RefreshTokenResponse
 import com.example.eshaafihu_android_sdk.feature.refresh_token.domain.usecases.RefreshTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
@@ -25,6 +28,7 @@ class HomeViewModel @Inject constructor(
     private val citiesUseCase: CitiesUseCase,
     private val loginUseCase: LoginUseCases,
     private val refreshToken: RefreshTokenUseCase,
+    private val tokenManager: TokenManager
 ) : ViewModel() {
 
     private val _citiesState = MutableLiveData<DataState<CitiesEntityResponseModel>>()
@@ -35,6 +39,9 @@ class HomeViewModel @Inject constructor(
 
     private val _refreshTokenRequest = MutableLiveData<DataState<RefreshTokenResponse>>()
     val refreshTokenRequest: LiveData<DataState<RefreshTokenResponse>> get() = _refreshTokenRequest
+
+    val tokenFlow: StateFlow<String?> = tokenManager.tokenFlow
+
 
     fun fetchCities() {
         viewModelScope.launch {
