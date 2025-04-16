@@ -2,7 +2,6 @@ package com.example.eshaafihu_android_sdk.core.network.networkInterceptors
 
 import okhttp3.Interceptor
 import okhttp3.Response
-import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import org.json.JSONArray
 import java.io.IOException
