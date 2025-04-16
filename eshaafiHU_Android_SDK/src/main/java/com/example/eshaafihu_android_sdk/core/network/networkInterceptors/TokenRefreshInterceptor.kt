@@ -23,7 +23,7 @@ internal class TokenRefreshInterceptor @Inject constructor(
             synchronized(this) {
                 Log.e("tokenUpdate","401")
                 val newToken = runBlocking {
-                    tokenManagerProvider.get().refreshToken()
+                    tokenManagerProvider.get().refreshToken().refreshToken.idToken
                 }
                 val newRequest = originalRequest.newBuilder()
                     .header("Authorization", "Bearer $newToken")

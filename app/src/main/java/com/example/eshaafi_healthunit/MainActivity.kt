@@ -10,16 +10,11 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.eshaafi_healthunit.app.presentation.home.viewmodel.HomeViewModel
 import com.example.eshaafihu_android_sdk.core.constants.Constants
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
-import com.example.eshaafihu_android_sdk.feature.auth.login.data.model.OtpRequestDto
-import com.example.eshaafihu_android_sdk.feature.refresh_token.data.model.RefreshTokenPost
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,6 +33,11 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.tokenFlow.collect { token ->
                 Log.d("MyTOKEN", "Observed in Fragment: $token")
+                viewModel.updateAuthConfig(
+                    token?.refreshToken?.idToken.toString(),
+                    token?.refreshToken?.accessToken.toString(),
+                    token?.refreshToken?.refreshToken.toString()
+                )
                 // Update UI or do something with token
             }
         }

@@ -25,7 +25,9 @@ data class RefreshTokenResponseDto(
 
         @SerializedName("AccessToken")
         @Expose
-        val accessToken: String = ""
+        val accessToken: String = "",
+        @SerializedName("RefreshToken")
+        val refreshToken: String = "",
     )
 
     fun toDomain(): RefreshTokenResponse {
@@ -34,7 +36,8 @@ data class RefreshTokenResponseDto(
             message = this.message,
             refreshToken = RefreshToken(
                 idToken = response.idToken,
-                accessToken = response.accessToken
+                accessToken = response.accessToken,
+                refreshToken = response.refreshToken
             )
         )
     }

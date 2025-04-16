@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.eshaafihu_android_sdk.core.authconfig.AuthConfigManager
+import com.example.eshaafihu_android_sdk.core.authconfig.MyAuthConfig
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
 import com.example.eshaafihu_android_sdk.core.network.networkConfiguration.NetworkConfigManager
 import com.example.eshaafihu_android_sdk.core.network.networkConfiguration.RequestConfig
@@ -40,7 +42,7 @@ class HomeViewModel @Inject constructor(
     private val _refreshTokenRequest = MutableLiveData<DataState<RefreshTokenResponse>>()
     val refreshTokenRequest: LiveData<DataState<RefreshTokenResponse>> get() = _refreshTokenRequest
 
-    val tokenFlow: StateFlow<String?> = tokenManager.tokenFlow
+    val tokenFlow: StateFlow<RefreshTokenResponse?> = tokenManager.tokenFlow
 
 
     fun fetchCities() {
@@ -68,5 +70,14 @@ class HomeViewModel @Inject constructor(
             token = token
         )
         NetworkConfigManager.updateConfig(config) // ✅ SDK Gets Updated
+    }
+
+    fun updateAuthConfig(idToken: String, accessToken: String, refreshToken: String) {
+        val config = MyAuthConfig(
+            idToken = idToken,
+            accessToken = accessToken,
+            refreshToken = refreshToken,
+        )
+        AuthConfigManager.updateConfig(config) // ✅ SDK Gets Updated
     }
 }

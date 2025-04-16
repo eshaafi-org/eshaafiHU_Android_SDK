@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.eshaafihu_android_sdk.core.constants.Constants
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
 import com.example.eshaafihu_android_sdk.feature.refresh_token.data.model.RefreshTokenPost
+import com.example.eshaafihu_android_sdk.feature.refresh_token.domain.entity.RefreshTokenResponse
 import com.example.eshaafihu_android_sdk.feature.refresh_token.domain.usecases.RefreshTokenUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,19 +16,19 @@ import javax.inject.Singleton
     private val refreshTokenUseCase: RefreshTokenUseCase
 ) {
 
-    private var _token: String? = null
-    val token: String?
+    private var _token: RefreshTokenResponse? = null
+    val token: RefreshTokenResponse?
         get() = _token
 
-    private val _tokenFlow = MutableStateFlow<String?>(null)
-    val tokenFlow: StateFlow<String?> get() = _tokenFlow
+    private val _tokenFlow = MutableStateFlow<RefreshTokenResponse?>(null)
+    val tokenFlow: StateFlow<RefreshTokenResponse?> get() = _tokenFlow
 
-    fun updateToken(newToken: String) {
+    fun updateToken(newToken: RefreshTokenResponse) {
         _token = newToken
         _tokenFlow.value = newToken
     }
 
-    internal suspend fun refreshToken(): String {
+    internal suspend fun refreshToken(): RefreshTokenResponse {
         Log.d("TokenManager", "Refreshing token...")
 
         val request = RefreshTokenPost(
@@ -39,7 +40,7 @@ import javax.inject.Singleton
 
         return when (val result = refreshTokenUseCase.refreshTokenResponse(request)) {
             is DataState.Success -> {
-                val newToken = result.data.refreshToken.accessToken
+                val newToken = result.data
                 Log.e("tokenUpdate","${result.data}")
                 updateToken(newToken)
                 newToken

@@ -8,5 +8,6 @@ data class RefreshTokenResponse(
 
 data class RefreshToken(
     val idToken: String,
-    val accessToken: String
+    val accessToken: String,
+    val refreshToken: String,
 )
