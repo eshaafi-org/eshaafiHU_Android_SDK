@@ -35,7 +35,7 @@ internal class CitiesRepositoryImpl @Inject constructor(
                 val domainModel = response.body()!!.toDomain()  // ✅ Convert DTO to Domain Model
                 DataState.Success(domainModel)
             } else {
-                DataState.Error(response.message() ?: "Unknown error")
+                DataState.Error(response.code().toString() ?: "Unknown error")
             }
         } catch (e: Exception) {
             DataState.Error(NetworkUtils.parseException(e))
