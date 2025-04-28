@@ -3,6 +3,7 @@ package com.example.eshaafihu_android_sdk.core.network.networkInterceptors
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.example.eshaafihu_android_sdk.core.app_logger.AppLogger
 import com.example.eshaafihu_android_sdk.core.network.tokenManager.TokenManager
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -41,7 +42,7 @@ internal class TokenRefreshInterceptor @Inject constructor(
 
         if (response.code == 401) {
             synchronized(this) {
-                Log.e("tokenUpdate","401")
+                AppLogger.e("tokenUpdate","401")
                 val newToken = runBlocking {
                     tokenManagerProvider.get().refreshToken().refreshToken.idToken
                 }

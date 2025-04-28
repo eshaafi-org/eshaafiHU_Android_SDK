@@ -1,6 +1,7 @@
 package com.example.eshaafihu_android_sdk.core.network.tokenManager
 
 import android.util.Log
+import com.example.eshaafihu_android_sdk.core.app_logger.AppLogger
 import com.example.eshaafihu_android_sdk.core.constants.Constants
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
 import com.example.eshaafihu_android_sdk.feature.refresh_token.data.model.RefreshTokenPost
@@ -48,7 +49,7 @@ import javax.inject.Singleton
     }
 
     internal suspend fun refreshToken(): RefreshTokenResponse {
-        Log.d("TokenManager", "Refreshing token...")
+        AppLogger.d("TokenManager", "Refreshing token...")
 
         val request = RefreshTokenPost(
                deviceId = "5322",
@@ -60,13 +61,13 @@ import javax.inject.Singleton
         return when (val result = refreshTokenUseCase.refreshTokenResponse(request)) {
             is DataState.Success -> {
                 val newToken = result.data
-                Log.e("tokenUpdate","${result.data}")
+                AppLogger.e("tokenUpdate","${result.data}")
                 updateToken(newToken)
                 newToken
             }
 
             is DataState.Error -> {
-                Log.e("tokenUpdate", "Failed to refresh token: ${result.exception}")
+                AppLogger.e("tokenUpdate", "Failed to refresh token: ${result.exception}")
                 throw Exception("Token refresh failed")
             }
 

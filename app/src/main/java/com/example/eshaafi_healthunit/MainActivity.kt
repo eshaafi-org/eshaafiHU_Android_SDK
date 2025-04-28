@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.eshaafi_healthunit.app.presentation.home.viewmodel.HomeViewModel
+import com.example.eshaafihu_android_sdk.core.app_logger.AppLogger
 import com.example.eshaafihu_android_sdk.core.constants.Constants
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.updateSDKConfig(Constants.MY_TOKEN,"dfdsfsafasd")
         lifecycleScope.launchWhenStarted {
             viewModel.tokenFlow.collect { token ->
-                Log.d("MyTOKEN", "Observed in Fragment: $token")
+                AppLogger.d("MyTOKEN", "Observed in Fragment: $token")
                 viewModel.updateAuthConfig(
                     token?.refreshToken?.idToken.toString(),
                     token?.refreshToken?.accessToken.toString(),
@@ -64,11 +65,11 @@ class MainActivity : AppCompatActivity() {
                     // Show loading indicator
                 }
                 is DataState.Success -> {
-                    Log.d("tokenUpdate","${state.data}")
+                    AppLogger.d("tokenUpdate","${state.data}")
                     // Hide loading and display cities data
                 }
                 is DataState.Error -> {
-                    Log.d("myResponse", state.exception)
+                    AppLogger.d("myResponse", state.exception)
                     // Hide loading and show error message
                 }
             }
@@ -79,11 +80,11 @@ class MainActivity : AppCompatActivity() {
                     // Show loading indicator
                 }
                 is DataState.Success -> {
-                    Log.d("myResponse","${state.data.refreshToken}")
+                    AppLogger.d("myResponse","${state.data.refreshToken}")
                     // Hide loading and display cities data
                 }
                 is DataState.Error -> {
-                    Log.d("myResponse", state.exception)
+                    AppLogger.d("myResponse", state.exception)
                     // Hide loading and show error message
                 }
             }
@@ -94,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                     // Show loading indicator
                 }
                 is DataState.Success -> {
-                    Log.d("myResponse","${state.data.response}")
+                    AppLogger.d("myResponse","${state.data.response}")
                     // Hide loading and display cities data
                 }
                 is DataState.Error -> {
