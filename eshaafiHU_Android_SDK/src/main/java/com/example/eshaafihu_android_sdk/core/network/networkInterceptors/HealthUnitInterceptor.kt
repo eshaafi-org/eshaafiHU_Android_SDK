@@ -5,7 +5,23 @@ import com.example.eshaafihu_android_sdk.core.network.networkConfiguration.Netwo
 import okhttp3.Interceptor
 import okhttp3.Response
 
+/**
+ * Intercepts HTTP requests to add necessary headers for authentication, app version, device type, and device ID.
+ * This class is responsible for modifying the original HTTP request by adding required headers before it is sent.
+ *
+ * @property chain The interceptor chain that allows us to modify the request before proceeding with the network call.
+ */
+
 internal class HealthUnitInterceptor : Interceptor {
+
+    /**
+     * Intercepts the HTTP request, adding necessary headers such as authorization token, app version, device type,
+     * and device ID to the original request.
+     *
+     * @param chain The interceptor chain that provides access to the original request.
+     * @return [Response] The response from the network after processing the modified request.
+     */
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val requestBuilder = originalRequest.newBuilder()

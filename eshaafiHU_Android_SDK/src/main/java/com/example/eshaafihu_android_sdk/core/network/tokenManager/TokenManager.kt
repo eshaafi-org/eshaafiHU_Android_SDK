@@ -11,12 +11,31 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * The `TokenManager` class is responsible for managing and refreshing authentication tokens.
+ * It holds the current token and provides a method to refresh it using the `RefreshTokenUseCase`.
+ * The class utilizes a `StateFlow` to notify subscribers of token updates.
+ *
+ * @constructor Injects a [RefreshTokenUseCase] to handle the token refresh logic.
+ */
 @Singleton
  class TokenManager @Inject constructor(
     private val refreshTokenUseCase: RefreshTokenUseCase
 ) {
 
+    /**
+     * The current token stored in the [TokenManager]. This token is updated when a successful
+     * refresh occurs.
+     */
+
     private var _token: RefreshTokenResponse? = null
+
+    /**
+     * A publicly accessible getter for the current token.
+     *
+     * @return The current [RefreshTokenResponse] token, or null if no token is available.
+     */
+
     val token: RefreshTokenResponse?
         get() = _token
 
