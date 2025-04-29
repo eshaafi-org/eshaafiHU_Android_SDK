@@ -1,5 +1,6 @@
 package com.example.eshaafihu_android_sdk.feature.cities.data.usecase
 
+import com.example.eshaafihu_android_sdk.core.app_logger.AppLogger
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
 import com.example.eshaafihu_android_sdk.feature.cities.domain.entity.CitiesEntityResponseModel
 import com.example.eshaafihu_android_sdk.feature.cities.domain.usecase.CitiesUseCase
@@ -31,6 +32,14 @@ internal class CitiesUseCaseImpl @Inject constructor(
      */
 
     override suspend fun getCities(): DataState<CitiesEntityResponseModel> {
+        AppLogger.d(message = "UseCase: getCities() called")
+        val result = repository.getCities()
+
+        when (result) {
+            is DataState.Success -> AppLogger.d(message = "UseCase: getCities() success with ${result.data}")
+            is DataState.Error -> AppLogger.e(message = "UseCase: getCities() failed with ${result.exception}")
+            DataState.Loading -> TODO()
+        }
         return repository.getCities()
     }
 }

@@ -1,5 +1,6 @@
 package com.example.eshaafihu_android_sdk.core.network.networkInterceptors
 
+import com.example.eshaafihu_android_sdk.core.app_logger.AppLogger
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.json.JSONObject
@@ -43,11 +44,13 @@ internal class PrettyLoggingInterceptor : Interceptor {
                 append("Body:\n$bodyString\n")
             }
         }
+        AppLogger.d(message = requestLog)
         println(requestLog)
 
         val response = try {
             chain.proceed(request)
         } catch (e: IOException) {
+            AppLogger.e(message = "❌ Network Error: ${e.message}")
             println("❌ Network Error: ${e.message}")
             throw e
         }
@@ -69,6 +72,7 @@ internal class PrettyLoggingInterceptor : Interceptor {
                 append("Body:\n${formatJson(bodyString)}\n")
             }
         }
+        AppLogger.d(message = responseLog)
         println(responseLog)
 
         return response

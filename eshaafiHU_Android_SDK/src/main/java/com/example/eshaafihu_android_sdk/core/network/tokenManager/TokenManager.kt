@@ -49,8 +49,6 @@ import javax.inject.Singleton
     }
 
     internal suspend fun refreshToken(): RefreshTokenResponse {
-        AppLogger.d("TokenManager", "Refreshing token...")
-
         val request = RefreshTokenPost(
                deviceId = "5322",
                 type = 1,
@@ -61,13 +59,11 @@ import javax.inject.Singleton
         return when (val result = refreshTokenUseCase.refreshTokenResponse(request)) {
             is DataState.Success -> {
                 val newToken = result.data
-                AppLogger.e("tokenUpdate","${result.data}")
                 updateToken(newToken)
                 newToken
             }
 
             is DataState.Error -> {
-                AppLogger.e("tokenUpdate", "Failed to refresh token: ${result.exception}")
                 throw Exception("Token refresh failed")
             }
 

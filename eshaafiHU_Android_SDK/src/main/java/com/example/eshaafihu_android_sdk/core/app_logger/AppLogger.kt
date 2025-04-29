@@ -7,7 +7,7 @@ import android.util.Log
  */
 object AppLogger {
 
-    private const val DEFAULT_TAG = "AppLogger"
+    private const val DEFAULT_TAG = "eshaafiHU"
 
     /**
      * Logs debug messages if in DEBUG build.

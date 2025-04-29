@@ -42,7 +42,7 @@ internal class TokenRefreshInterceptor @Inject constructor(
 
         if (response.code == 401) {
             synchronized(this) {
-                AppLogger.e("tokenUpdate","401")
+                AppLogger.e(message = "TokenExpired=${response.code.toString()}")
                 val newToken = runBlocking {
                     tokenManagerProvider.get().refreshToken().refreshToken.idToken
                 }
