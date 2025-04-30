@@ -2,6 +2,8 @@ package com.example.eshaafihu_android_sdk.core.app_logger
 
 
 import android.util.Log
+import com.example.eshaafihu_android_sdk.BuildConfig
+
 /**
  * Logger utility to print logs only in the development (debug) environment.
  */
@@ -16,9 +18,9 @@ object AppLogger {
      * @param message The message to log.
      */
     fun d(tag: String = DEFAULT_TAG, message: String) {
-        Log.d(tag, message)
-//        if (BuildConfig.DEBUG) {
-//        }
+        if (BuildConfig.DEBUG) {
+            Log.d(tag, message)
+        }
     }
 
     /**
@@ -28,8 +30,8 @@ object AppLogger {
      * @param message The message to log.
      */
     fun e(tag: String = DEFAULT_TAG, message: String) {
-        Log.e(tag, message)
-//        if (BuildConfig.DEBUG) {
-//        }
+        if (BuildConfig.DEBUG) {
+            Log.e(tag, message)
+        }
     }
 }

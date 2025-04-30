@@ -1,6 +1,8 @@
 package com.example.eshaafihu_android_sdk.core.network.networkModule
 
+import com.example.eshaafihu_android_sdk.BuildConfig
 import com.example.eshaafihu_android_sdk.core.constants.Constants
+import com.example.eshaafihu_android_sdk.core.constants.Constants.Companion.BASE_URL
 import com.example.eshaafihu_android_sdk.core.network.networkInterceptors.HealthUnitInterceptor
 import com.example.eshaafihu_android_sdk.core.network.networkInterceptors.NetworkInterceptor
 import com.example.eshaafihu_android_sdk.core.network.networkInterceptors.PrettyLoggingInterceptor
@@ -138,7 +140,7 @@ internal object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(Constants.Companion.BASE_URL) // Replace with your API base URL
+            .baseUrl(BASE_URL) // Replace with your API base URL
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

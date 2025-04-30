@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.utils.createPublishingInfoForLibrary
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -17,6 +15,23 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+    }
+    buildFeatures {
+        buildConfig = true // ✅ This enables BuildConfig generation
+    }
+
+    // ✅ Add flavor dimension and product flavors
+    flavorDimensions += "env"
+
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+            buildConfigField("String", "BASE_URL", "\"https://api.eshaafi.com/\"")
+        }
+        create("prod") {
+            dimension = "env"
+            buildConfigField("String", "BASE_URL", "\"https://app.eshaafi.com/\"")
+        }
     }
 
     buildTypes {
@@ -78,11 +93,12 @@ dependencies {
     implementation(libs.coroutines)
 }
 
+// ✅ Configure Maven publishing for the prodRelease variant
 afterEvaluate {
     publishing {
         publications {
-            create<MavenPublication>("release") {
-                from(components["release"])
+            create<MavenPublication>("prodRelease") {
+                from(components["prodRelease"])
                 groupId = "com.github.eshaafiHU_Android_SDK"
                 artifactId = "eshaafiHU_Android_SDK"
                 version = "1.0.1"
