@@ -1,9 +1,11 @@
 package com.example.eshaafihu_android_sdk.core.constants
 
+import com.example.eshaafihu_android_sdk.BuildConfig
+
 class Constants {
     companion object {
         //        my api end points
-        const val BASE_URL: String = "https://api.eshaafi.com/"
+        const val BASE_URL = BuildConfig.BASE_URL
         const val CITIES_API: String = "new/cities"
         const val PHONE_LOGIN: String = "auth/login"
         const val GET_PROFILE: String = "patients/profile"

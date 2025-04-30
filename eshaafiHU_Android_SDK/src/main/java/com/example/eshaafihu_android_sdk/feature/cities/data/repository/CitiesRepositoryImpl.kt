@@ -1,5 +1,6 @@
 package com.example.eshaafihu_android_sdk.feature.cities.data.repository
 
+import com.example.eshaafihu_android_sdk.core.app_logger.AppLogger
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
 import com.example.eshaafihu_android_sdk.core.network.networkUtils.NetworkUtils
 import com.example.eshaafihu_android_sdk.feature.cities.data.apiService.CitiesApiService
@@ -29,15 +30,19 @@ internal class CitiesRepositoryImpl @Inject constructor(
      */
 
     override suspend fun getCities(): DataState<CitiesEntityResponseModel> {
+        AppLogger.d(message = "Fetching cities from API")
         return try {
             val response = apiService.getCities()
             if (response.isSuccessful && response.body() != null) {
                 val domainModel = response.body()!!.toDomain()  // ✅ Convert DTO to Domain Model
+                AppLogger.d(message = "API Success: $domainModel")
                 DataState.Success(domainModel)
             } else {
+                AppLogger.e(message = "API Error: ${response.message()}")
                 DataState.Error(response.code().toString() ?: "Unknown error")
             }
         } catch (e: Exception) {
+            AppLogger.e(message = "API Exception: ${NetworkUtils.parseException(e)}")
             DataState.Error(NetworkUtils.parseException(e))
         }
     }

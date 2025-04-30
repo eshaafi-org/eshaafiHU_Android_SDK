@@ -1,5 +1,6 @@
 package com.example.eshaafihu_android_sdk.core.network.networkInterceptors
 
+import com.example.eshaafihu_android_sdk.core.app_logger.AppLogger
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.json.JSONObject
@@ -8,7 +9,25 @@ import java.io.IOException
 import java.nio.charset.Charset
 import java.util.concurrent.TimeUnit
 
+/**
+ * Interceptor for logging HTTP request and response details in a readable and formatted manner.
+ * This class intercepts network requests and responses to log them, including request method, headers, body content,
+ * response status code, headers, and formatted body content (if applicable).
+ *
+ * @property chain The interceptor chain that allows modification of the request before proceeding with the network call.
+ */
+
 internal class PrettyLoggingInterceptor : Interceptor {
+
+    /**
+     * Intercepts the HTTP request and logs detailed information about the request and response.
+     * This includes request method, URL, headers, and body, as well as response code, headers, and formatted body.
+     * The time taken for the network call is also logged.
+     *
+     * @param chain The interceptor chain that provides access to the original request.
+     * @return [Response] The response from the network after processing the request.
+     * @throws IOException If a network error occurs, the exception is logged and re-thrown.
+     */
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val startTime = System.nanoTime()
@@ -25,11 +44,13 @@ internal class PrettyLoggingInterceptor : Interceptor {
                 append("Body:\n$bodyString\n")
             }
         }
+        AppLogger.d(message = requestLog)
         println(requestLog)
 
         val response = try {
             chain.proceed(request)
         } catch (e: IOException) {
+            AppLogger.e(message = "❌ Network Error: ${e.message}")
             println("❌ Network Error: ${e.message}")
             throw e
         }
@@ -51,10 +72,19 @@ internal class PrettyLoggingInterceptor : Interceptor {
                 append("Body:\n${formatJson(bodyString)}\n")
             }
         }
+        AppLogger.d(message = responseLog)
         println(responseLog)
 
         return response
     }
+
+
+    /**
+     * Formats a JSON string with indentation for better readability.
+     *
+     * @param json The raw JSON string to be formatted.
+     * @return A formatted version of the JSON string if it is valid JSON, otherwise the original string.
+     */
 
     private fun formatJson(json: String): String {
         return try {

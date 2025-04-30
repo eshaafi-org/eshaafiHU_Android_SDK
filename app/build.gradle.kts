@@ -18,11 +18,33 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    // ✅ Add these lines to fix SDK flavor matching
+    flavorDimensions += "env"
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+            matchingFallbacks += listOf("dev") // Required for SDK variant resolution
+        }
+        create("prod") {
+            dimension = "env"
+            matchingFallbacks += listOf("prod")
+        }
+    }
     buildFeatures {
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
+    }
+
+    signingConfigs {
+        create("debugKey") {
+            storeFile = file("${System.getProperty("user.home")}/.android/debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
     }
 
 
@@ -33,6 +55,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // 👇 Use debug key for release build (for internal testing only)
+            signingConfig = signingConfigs.getByName("debugKey")
         }
     }
     compileOptions {

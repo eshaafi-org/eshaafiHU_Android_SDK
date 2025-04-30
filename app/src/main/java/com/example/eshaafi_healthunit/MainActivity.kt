@@ -10,11 +10,17 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.eshaafi_healthunit.app.presentation.home.viewmodel.HomeViewModel
+import com.example.eshaafihu_android_sdk.core.app_logger.AppLogger
 import com.example.eshaafihu_android_sdk.core.constants.Constants
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
+import com.example.eshaafihu_android_sdk.feature.auth.login.data.model.OtpRequestDto
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,19 +35,19 @@ class MainActivity : AppCompatActivity() {
         WindowInsetsControllerCompat(window, window.decorView).apply {
             hide(android.view.WindowInsets.Type.systemBars())
         }
-        viewModel.updateSDKConfig(Constants.MY_TOKEN,"dfdsfsafasd")
-        lifecycleScope.launchWhenStarted {
-            viewModel.tokenFlow.collect { token ->
-                Log.d("MyTOKEN", "Observed in Fragment: $token")
-                viewModel.updateAuthConfig(
-                    token?.refreshToken?.idToken.toString(),
-                    token?.refreshToken?.accessToken.toString(),
-                    token?.refreshToken?.refreshToken.toString()
-                )
-                // Update UI or do something with token
-            }
-        }
-        viewModel.fetchCities()
+//        viewModel.updateSDKConfig(Constants.MY_TOKEN,"dfdsfsafasd")
+//        lifecycleScope.launchWhenStarted {
+//            viewModel.tokenFlow.collect { token ->
+//                AppLogger.d(message = "Observed token in Ui: $token")
+//                viewModel.updateAuthConfig(
+//                    token?.refreshToken?.idToken.toString(),
+//                    token?.refreshToken?.accessToken.toString(),
+//                    token?.refreshToken?.refreshToken.toString()
+//                )
+//                // Update UI or do something with token
+//            }
+//        }
+//        viewModel.fetchCities()
 //        viewModel.sendLoginPhone(
 //            OtpRequestDto(
 //                phoneNo = "+923441490027",
@@ -58,43 +64,41 @@ class MainActivity : AppCompatActivity() {
 //                refreshToken = Constants.MY_TOKEN
 //            )
 //        )
-        viewModel.citiesState.observe(this) { state ->
+        viewModel.citiesState.observeOnce(this) { state ->
             when (state) {
                 is DataState.Loading -> {
                     // Show loading indicator
                 }
                 is DataState.Success -> {
-                    Log.d("tokenUpdate","${state.data}")
+                    AppLogger.d(message = "All Cities=${state.data}")
                     // Hide loading and display cities data
                 }
                 is DataState.Error -> {
-                    Log.d("myResponse", state.exception)
+                    AppLogger.d(message = "Exception=${state.exception}")
                     // Hide loading and show error message
                 }
             }
         }
-        viewModel.refreshTokenRequest.observe(this) { state ->
+        viewModel.refreshTokenRequest.observeOnce(this) { state ->
             when (state) {
                 is DataState.Loading -> {
                     // Show loading indicator
                 }
                 is DataState.Success -> {
-                    Log.d("myResponse","${state.data.refreshToken}")
+//                    AppLogger.d(message = "token request response=${state.data.refreshToken}")
                     // Hide loading and display cities data
                 }
                 is DataState.Error -> {
-                    Log.d("myResponse", state.exception)
                     // Hide loading and show error message
                 }
             }
         }
-        viewModel.sendPhone.observe(this) { state ->
+        viewModel.sendPhone.observeOnce(this) { state ->
             when (state) {
                 is DataState.Loading -> {
                     // Show loading indicator
                 }
                 is DataState.Success -> {
-                    Log.d("myResponse","${state.data.response}")
                     // Hide loading and display cities data
                 }
                 is DataState.Error -> {
@@ -110,6 +114,25 @@ class MainActivity : AppCompatActivity() {
 //    @Preview(showBackground = true)
     @Composable
     fun MyApp() {
+    LaunchedEffect(Unit) {
+//       viewModel.fetchCities()
+        viewModel.sendLoginPhone(
+            OtpRequestDto(
+                phoneNo = "+923441490027",
+                type = 1
+            )
+        )
+    }
     }
 }
+
+fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+    observe(lifecycleOwner, object : Observer<T> {
+        override fun onChanged(value: T) {
+            observer.onChanged(value)
+            removeObserver(this) // Remove observer after first callback
+        }
+    })
+}
+
 
