@@ -9,6 +9,25 @@ android {
     namespace = "com.example.eshaafi_healthunit"
     compileSdk = 35
 
+    // Generate debug.keystore if it doesn't exist in custom path
+    val debugKeystore = File("/home/terafort/Documents/eshaafiHU_Android_SDK/app/debug.keystore")
+    if (!debugKeystore.exists()) {
+        debugKeystore.parentFile.mkdirs()
+        exec {
+            commandLine(
+                "keytool", "-genkey", "-v",
+                "-keystore", debugKeystore.absolutePath,
+                "-storepass", "android",
+                "-alias", "androiddebugkey",
+                "-keypass", "android",
+                "-keyalg", "RSA", "-keysize", "2048", "-validity", "10000",
+                "-dname", "CN=Android Debug,O=Android,C=US"
+            )
+        }
+    }
+
+
+
     defaultConfig {
         applicationId = "com.example.eshaafi_healthunit"
         minSdk = 24
@@ -40,12 +59,13 @@ android {
 
     signingConfigs {
         create("debugKey") {
-            storeFile = file("${System.getProperty("user.home")}/.android/debug.keystore")
+            storeFile = file("/home/terafort/Documents/eshaafiHU_Android_SDK/app/debug.keystore")
             storePassword = "android"
             keyAlias = "androiddebugkey"
             keyPassword = "android"
         }
     }
+
 
 
     buildTypes {
