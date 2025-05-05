@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.utils.createPublishingInfoForLibrary
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -101,7 +103,7 @@ afterEvaluate {
                 from(components["prodRelease"])
                 groupId = "com.github.eshaafiHU_Android_SDK"
                 artifactId = "eshaafiHU_Android_SDK"
-                version = "1.0.3"
+                version = "1.0.4"
             }
         }
     }
