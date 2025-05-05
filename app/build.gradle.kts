@@ -59,7 +59,7 @@ android {
 
     signingConfigs {
         create("debugKey") {
-            storeFile = file("/home/terafort/Documents/eshaafiHU_Android_SDK/app/debug.keystore")
+            storeFile = file("debug.keystore")
             storePassword = "android"
             keyAlias = "androiddebugkey"
             keyPassword = "android"
