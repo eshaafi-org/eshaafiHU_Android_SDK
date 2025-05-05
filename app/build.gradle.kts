@@ -10,21 +10,21 @@ android {
     compileSdk = 35
 
     // Generate debug.keystore if it doesn't exist in custom path
-    val debugKeystore = File("/home/terafort/Documents/eshaafiHU_Android_SDK/app/debug.keystore")
-    if (!debugKeystore.exists()) {
-        debugKeystore.parentFile.mkdirs()
-        exec {
-            commandLine(
-                "keytool", "-genkey", "-v",
-                "-keystore", debugKeystore.absolutePath,
-                "-storepass", "android",
-                "-alias", "androiddebugkey",
-                "-keypass", "android",
-                "-keyalg", "RSA", "-keysize", "2048", "-validity", "10000",
-                "-dname", "CN=Android Debug,O=Android,C=US"
-            )
-        }
-    }
+//    val debugKeystore = File("/home/terafort/Documents/eshaafiHU_Android_SDK/app/debug.keystore")
+//    if (!debugKeystore.exists()) {
+//        debugKeystore.parentFile.mkdirs()
+//        exec {
+//            commandLine(
+//                "keytool", "-genkey", "-v",
+//                "-keystore", debugKeystore.absolutePath,
+//                "-storepass", "android",
+//                "-alias", "androiddebugkey",
+//                "-keypass", "android",
+//                "-keyalg", "RSA", "-keysize", "2048", "-validity", "10000",
+//                "-dname", "CN=Android Debug,O=Android,C=US"
+//            )
+//        }
+//    }
 
 
 
