@@ -101,7 +101,7 @@ afterEvaluate {
                 from(components["prodRelease"])
                 groupId = "com.github.eshaafiHU_Android_SDK"
                 artifactId = "eshaafiHU_Android_SDK"
-                version = "1.0.1"
+                version = "1.0.3"
             }
         }
     }
