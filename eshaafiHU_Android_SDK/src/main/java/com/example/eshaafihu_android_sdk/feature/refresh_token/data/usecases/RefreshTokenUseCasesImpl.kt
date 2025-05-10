@@ -1,5 +1,6 @@
 package com.example.eshaafihu_android_sdk.feature.refresh_token.data.usecases
 
+import com.example.eshaafihu_android_sdk.core.app_logger.AppLogger
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
 import com.example.eshaafihu_android_sdk.feature.refresh_token.data.model.RefreshTokenPost
 import com.example.eshaafihu_android_sdk.feature.refresh_token.domain.entity.RefreshTokenResponse
@@ -31,6 +32,12 @@ internal class RefreshTokenUseCasesImpl @Inject constructor(
      */
 
     override suspend fun refreshTokenResponse(request: RefreshTokenPost): DataState<RefreshTokenResponse> {
+        val result = refreshTokenResponse(request)
+        when (result) {
+            is DataState.Success -> AppLogger.d(message = "UseCase: refreshTokenResponse() success with ${result.data}")
+            is DataState.Error -> AppLogger.e(message = "UseCase: refreshTokenResponse() failed with ${result.exception}")
+            DataState.Loading -> TODO()
+        }
         return repository.refreshTokenResponse(request)
     }
 }

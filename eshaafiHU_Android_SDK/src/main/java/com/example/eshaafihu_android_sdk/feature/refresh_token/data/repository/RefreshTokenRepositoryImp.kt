@@ -1,5 +1,6 @@
 package com.example.eshaafihu_android_sdk.feature.refresh_token.data.repository
 
+import com.example.eshaafihu_android_sdk.core.app_logger.AppLogger
 import com.example.eshaafihu_android_sdk.core.network.dataState.DataState
 import com.example.eshaafihu_android_sdk.core.network.networkUtils.NetworkUtils
 import com.example.eshaafihu_android_sdk.feature.refresh_token.data.apiService.RefreshTokenApi
@@ -35,15 +36,20 @@ internal class RefreshTokenRepositoryImp @Inject constructor(
     override suspend fun refreshTokenResponse(request: RefreshTokenPost): DataState<RefreshTokenResponse> {
         return try {
             val response = apiService.refreshTokenRequest(request)
+            AppLogger.d(message = "response=$response")
             if (response.isSuccessful && response.body() != null) {
                 // Convert the response body (DTO) into a domain model and return success
                 val domainModel = response.body()!!.toDomain()  // ✅ Convert DTO to Domain Model
+                AppLogger.d(message = "API Success: $domainModel")
                 DataState.Success(domainModel)
             } else {
+                AppLogger.e(message = "API Error: ${response.message()}")
                 DataState.Error(response.message() ?: "Unknown error")
             }
         } catch (e: Exception) {
+            AppLogger.e(message = "API Exception: ${NetworkUtils.parseException(e)}")
             DataState.Error(NetworkUtils.parseException(e))
+
         }
     }
 }
